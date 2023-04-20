@@ -80,13 +80,11 @@ def man_cmd(
 
     def decorator(func):
         if bot:
-            if not disable_edited:
-                bot.add_event_handler(
-                    func, events.MessageEdited(**args, outgoing=True, pattern=man_reg)
-                )
-            bot.add_event_handler(
-                func, events.NewMessage(**args, outgoing=True, pattern=man_reg)
-            )
+        if not disable_edited:
+            bot.add_event_handler(wrapper, events.MessageEdited(**args))
+        bot.add_event_handler(wrapper, events.NewMessage(**args))
+        return wrapper
+
         if allow_sudo:
             if not disable_edited:
                 bot.add_event_handler(
